@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEmail,
   IsIn,
   IsOptional,
@@ -93,4 +94,12 @@ export class CreateUserDto {
   @MinLength(2)
   @MaxLength(4)
   lada: string;
+
+  @ApiProperty({
+    description: 'state of user',
+    nullable: false,
+    example: true,
+  })
+  @IsBoolean()
+  state: boolean;
 }

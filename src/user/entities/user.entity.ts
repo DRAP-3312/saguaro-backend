@@ -1,7 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Board } from 'src/board/entities/board.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity()
+@Entity('user')
 export class User {
   @ApiProperty({
     example: 'e1054272-7da4-4527-9358-662fd0552d5e',
@@ -70,4 +77,20 @@ export class User {
   })
   @Column('text')
   lada: string;
+
+  @ApiProperty({
+    example: true,
+    description: 'User state',
+  })
+  @Column('bool')
+  state: boolean;
+
+  @ManyToMany(() => Board, (board) => board.users, { cascade: true })
+  @JoinTable({
+    name: 'user_board',
+    joinColumn: {
+      referencedColumnName: 'id',
+    },
+  })
+  boards: Board[];
 }
