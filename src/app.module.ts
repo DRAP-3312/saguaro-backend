@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { BoardModule } from './board/board.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { BoardModule } from './board/board.module';
     }),
     UserModule,
     BoardModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [],
