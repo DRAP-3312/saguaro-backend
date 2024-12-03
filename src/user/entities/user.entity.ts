@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Board } from 'src/board/entities/board.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class User {
@@ -45,7 +39,7 @@ export class User {
     description: 'User description',
   })
   @Column('text')
-  description: string;
+  description?: string;
 
   @ApiProperty({
     example: 'mifoto.jpg',
@@ -53,7 +47,7 @@ export class User {
     uniqueItems: true,
   })
   @Column('text')
-  picture: string;
+  picture?: string;
 
   @ApiProperty({
     example: 'male',
@@ -68,7 +62,7 @@ export class User {
     uniqueItems: true,
   })
   @Column('text')
-  phone: string;
+  phone?: string;
 
   @ApiProperty({
     example: '+52',
@@ -76,7 +70,7 @@ export class User {
     uniqueItems: false,
   })
   @Column('text')
-  lada: string;
+  lada?: string;
 
   @ApiProperty({
     example: true,
@@ -85,12 +79,6 @@ export class User {
   @Column('bool')
   state: boolean;
 
-  @ManyToMany(() => Board, (board) => board.users, { cascade: true })
-  @JoinTable({
-    name: 'user_board',
-    joinColumn: {
-      referencedColumnName: 'id',
-    },
-  })
-  boards: Board[];
+  @OneToMany(() => Board, (board) => board.createdBy)
+  board: Board[];
 }

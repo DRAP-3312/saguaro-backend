@@ -1,12 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 
 export class CreateBoardDto {
   @ApiProperty({
@@ -37,4 +40,16 @@ export class CreateBoardDto {
   })
   @IsBoolean()
   state: boolean;
+
+  @ApiProperty({
+    type: 'string',
+  })
+  @IsUUID()
+  createdBy: string;
+
+  @ApiProperty({
+    example: [],
+  })
+  @IsArray()
+  guest?: string[];
 }

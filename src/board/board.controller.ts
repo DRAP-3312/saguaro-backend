@@ -1,7 +1,14 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Board } from './entities/board.entity';
 
 @ApiTags('board')
@@ -13,7 +20,18 @@ export class BoardController {
   @ApiResponse({ status: 201, description: 'Board was created', type: Board })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
-  create(@Body() createBoardDto: CreateBoardDto) {
-    return this.boardService.create(createBoardDto);
+  async create(
+    @Param('id') id: string,
+    @Body() createBoardDto: CreateBoardDto,
+  ) {
+    return await this.boardService.create(id, createBoardDto);
+  }
+
+  @ApiResponse({ status: 201, description: 'All board', type: Board })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related' })
+  @Get()
+  async findAll() {
+    return await this.boardService.findAll();
   }
 }

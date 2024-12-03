@@ -3,8 +3,10 @@ import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
-  ManyToMany,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { List } from './list.entity';
@@ -13,38 +15,37 @@ import { List } from './list.entity';
 export class Board {
   @ApiProperty({
     example: '',
-    description: 'Board id',
-    uniqueItems: true,
   })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ApiProperty({
-    example: 'Tareas matematicas',
-    description: 'Board name',
-    uniqueItems: true,
-    required: true,
+    example: 'Tareas matemáticas',
   })
   @Column('text', { unique: true })
   name: string;
 
   @ApiProperty({
-    example: 'Aca las tareas pendientes de la materia matematicas',
-    description: 'Board description',
+    example: 'Aquí las tareas pendientes de la materia matemáticas',
   })
   @Column('text')
-  description: string;
+  description?: string;
 
   @ApiProperty({
     example: true,
-    description: 'Board state',
   })
   @Column('bool')
   state: boolean;
 
-  @ManyToMany(() => User, (user) => user.boards)
-  users: User[];
-
   @OneToMany(() => List, (list) => list.board)
-  lists: List[];
+  lists?: string[];
+
+  @ManyToOne(() => User, (user) => user.board)
+  @JoinColumn({
+    name: 'idOwner',
+  })
+  createdBy: User;
+
+  @Column('simple-array', { default: [] })
+  guest?: string[];
 }
